@@ -1,0 +1,205 @@
+<html><head><base href="돈들락관리페이지.html">
+<title>돈들락 관리페이지</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=15281"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body {
+    font-family: 'Nanum Gothic', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  header {
+    background-color: #4a90e2;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+  }
+  h1, h2 {
+    margin: 0;
+  }
+  .dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .chart-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: calc(50% - 10px);
+  }
+  .table-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 100%;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #4a90e2;
+    color: white;
+  }
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  .back-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+  .back-link a {
+    color: #4a90e2;
+    text-decoration: none;
+  }
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 768px) {
+    .chart-container {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>돈들락 관리 페이지</h1>
+  </header>
+  <div class="container">
+    <div class="dashboard">
+      <div class="chart-container">
+        <h2>일간 매출</h2>
+        <canvas id="dailySalesChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h2>품목 별 월간 매출</h2>
+        <canvas id="monthlySalesChart"></canvas>
+      </div>
+      <div class="table-container">
+        <h2>총 매출액</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>기간</th>
+              <th>총 매출</th>
+              <th>최고 판매 품목</th>
+              <th>수익</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>오늘</td>
+              <td>450,000원</td>
+              <td>삼겹살</td>
+              <td>180,000원</td>
+            </tr>
+            <tr>
+              <td>이번주</td>
+              <td>3,200,000원</td>
+              <td>장어</td>
+              <td>1,400,000원</td>
+            </tr>
+            <tr>
+              <td>이번달</td>
+              <td>12,500,000원</td>
+              <td>삼겹살</td>
+              <td>5,250,000원</td>
+            </tr>
+            <tr>
+              <td>올해</td>
+              <td>145,000,000원</td>
+              <td>장어</td>
+              <td>58,000,000원</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="back-link">
+      <a href="돈들락.html">메뉴 페이지</a>
+    </div>
+  </div>
+
+  <script>
+    // Daily Sales Chart
+    const dailySalesCtx = document.getElementById('dailySalesChart').getContext('2d');
+    new Chart(dailySalesCtx, {
+      type: 'line',
+      data: {
+        labels: ['월', '화', '수', '목', '금', '토', '일'],
+        datasets: [{
+          label: '수입 (원)',
+          data: [320000, 450000, 380000, 500000, 600000, 750000, 680000],
+          borderColor: '#4a90e2',
+          tension: 0.1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '₩' + value.toLocaleString();
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Monthly Sales by Item Chart
+    const monthlySalesCtx = document.getElementById('monthlySalesChart').getContext('2d');
+    new Chart(monthlySalesCtx, {
+      type: 'bar',
+      data: {
+        labels: ['삼겹살', '장어', '소주', '맥주', '음료수'],
+        datasets: [{
+          label: '수입 (원)',
+          data: [5250000, 4800000, 1200000, 800000, 450000],
+          backgroundColor: [
+            '#ff6b6b',
+            '#feca57',
+            '#48dbfb',
+            '#ff9ff3',
+            '#54a0ff'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return '₩' + value.toLocaleString();
+              }
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body></html>
